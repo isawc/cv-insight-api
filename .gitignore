@@ -1,0 +1,18 @@
+# Ambiente virtual
+venv/
+
+# Variáveis de ambiente
+.env
+
+# Cache do Python
+__pycache__/
+*.pyc
+
+# Banco de dados
+*.db
+
+# PDFs de teste (não sobe currículo de ninguém pro GitHub!)
+*.pdf
+
+# VS Code
+.vscode/
