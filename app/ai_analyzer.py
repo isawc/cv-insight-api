@@ -1,22 +1,9 @@
 import json
 
-from typing import Literal
-
-from pydantic import BaseModel, Field
-
-
-class ResultadoAnalise(BaseModel):
-    nivel_estimado: Literal["júnior", "pleno", "sênior"]
-    pontos_fortes: list[str]
-    pontos_de_melhoria: list[str]
-    sugestoes: list[str]
-    compatibilidade_vaga: int = Field(ge=0, le=100)
-    resumo: str
-
-
 from groq import Groq
 
 from app.config import GROQ_API_KEY, GROQ_MODEL, MAX_TOKENS
+from app.schemas import ResultadoAnalise
 
 cliente = Groq(api_key=GROQ_API_KEY)
 
@@ -42,7 +29,7 @@ Currículo:
 
 Retorne exatamente neste formato:
 {{
-    "nivel_estimado": "júnior | pleno | sênior",
+    "nivel_estimado": "júnior",
     "pontos_fortes": ["ponto 1", "ponto 2", "ponto 3"],
     "pontos_de_melhoria": ["ponto 1", "ponto 2", "ponto 3"],
     "sugestoes": ["sugestão 1", "sugestão 2", "sugestão 3"],
@@ -55,6 +42,7 @@ Regras:
 - Se nenhuma vaga foi informada, compatibilidade_vaga deve ser 0
 - Seja objetivo e técnico nas análises
 - Retorne APENAS o JSON, sem markdown, sem explicações
+- nivel_estimado deve ser escolhido entre: júnior, pleno ou sênior
 """
 
     resposta = cliente.chat.completions.create(
@@ -71,6 +59,10 @@ Regras:
         raise ValueError("A IA retornou uma resposta vazia.")
 
     try:
-        return json.loads(texto_resposta)
-    except json.JSONDecodeError as erro:
+        dados = json.loads(texto_resposta)
+        return ResultadoAnalise.model_validate(dados).model_dump()
+    except (json.JSONDecodeError, ValueError) as erro:
         raise ValueError("A IA retornou uma resposta inválida. Tente novamente.") from erro
+
+
+

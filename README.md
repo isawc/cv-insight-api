@@ -13,7 +13,7 @@ processamento de arquivos PDF e boas práticas de desenvolvimento em Python.
 
 ---
 
-## O que faz
+## 🤖 O que faz
 
 - Recebe um currículo em PDF
 - Extrai e processa o texto automaticamente
@@ -26,6 +26,9 @@ processamento de arquivos PDF e boas práticas de desenvolvimento em Python.
   - Compatibilidade com uma vaga informada (0–100%)
 
 ---
+
+> 🔒 **Privacidade:** Os currículos enviados são processados apenas durante 
+> a requisição e não são armazenados pela aplicação.
 
 ## 🛠️ Tecnologias
 
@@ -46,7 +49,7 @@ processamento de arquivos PDF e boas práticas de desenvolvimento em Python.
 
 ---
 
-## Como usar
+## 🚀 Como usar
 
 ### 1. Health Check
 ![Health Check](assets/health-check.png)
