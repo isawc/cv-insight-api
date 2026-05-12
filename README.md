@@ -86,6 +86,7 @@ Acesse: http://localhost:8000/docs
 ---
 
 ## 📁 Estrutura do projeto
+```
 cv-insight-api/
 ├── app/
 │   ├── main.py            # Entrada da aplicação
@@ -97,6 +98,7 @@ cv-insight-api/
 ├── requirements.txt
 ├── runtime.txt
 └── README.md
+```
 ---
 
 Desenvolvido por [Isaac Alvarenga](https://github.com/isawc)
