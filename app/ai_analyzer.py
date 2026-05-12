@@ -1,10 +1,10 @@
 import json
 
-import anthropic
+from groq import Groq
 
-from app.config import ANTHROPIC_API_KEY, CLAUDE_MODEL, MAX_TOKENS
+from app.config import GROQ_API_KEY, GROQ_MODEL, MAX_TOKENS
 
-cliente = anthropic.Anthropic(api_key=ANTHROPIC_API_KEY)
+cliente = Groq(api_key=GROQ_API_KEY)
 
 
 def analisar_curriculo(texto_curriculo: str, descricao_vaga: str = "") -> dict:
@@ -19,7 +19,6 @@ Vaga para análise de compatibilidade:
 
     prompt = f"""
 Você é um assistente técnico especializado em análise de currículos de tecnologia.
-
 Analise o currículo abaixo e retorne APENAS um JSON válido, sem nenhum texto antes ou depois.
 
 {contexto_vaga}
@@ -44,13 +43,18 @@ Regras:
 - Retorne APENAS o JSON, sem markdown, sem explicações
 """
 
-    resposta = cliente.messages.create(
-        model=CLAUDE_MODEL,
+    resposta = cliente.chat.completions.create(
+        model=GROQ_MODEL,
         max_tokens=MAX_TOKENS,
+        temperature=0,
+        response_format={"type": "json_object"},
         messages=[{"role": "user", "content": prompt}],
     )
 
-    texto_resposta = resposta.content[0].text
+    texto_resposta = resposta.choices[0].message.content
+
+    if not texto_resposta:
+        raise ValueError("A IA retornou uma resposta vazia.")
 
     try:
         return json.loads(texto_resposta)
